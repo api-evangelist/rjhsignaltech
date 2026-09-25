@@ -1,0 +1,61 @@
+generated: '2026-09-25'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/openapi.json
+- openapi/rjhsignaltech-batch-api-openapi.yml
+- openapi/rjhsignaltech-civicinfo-api-openapi.yml
+- openapi/rjhsignaltech-divisions-api-openapi.yml
+- openapi/rjhsignaltech-lookup-api-openapi.yml
+- openapi/rjhsignaltech-x402-api-openapi.yml
+- openapi/rjhsignaltech-zip-api-openapi.yml
+format: custom
+envelope:
+  media_type: null
+  schema: null
+coverage:
+  operations: 16
+  statuses_declared: 7
+problems:
+- status: 400
+  title: Bad Request
+  description: Missing or too-long address
+  operations: 14
+  media_types: []
+  schema: null
+- status: 401
+  title: Unauthorized
+  description: Unknown X-API-Key (carries upgrade_url)
+  operations: 8
+  media_types: []
+  schema: null
+- status: 402
+  title: Payment Required
+  description: Payment Required
+  operations: 10
+  media_types: []
+  schema: null
+- status: 404
+  title: Not Found
+  description: no_match
+  operations: 10
+  media_types: []
+  schema: null
+- status: 413
+  title: Content Too Large
+  description: Body over 64 KB
+  operations: 2
+  media_types: []
+  schema: null
+- status: 429
+  title: Too Many Requests
+  description: Quota exceeded
+  operations: 12
+  media_types: []
+  schema: null
+- status: 502
+  title: Bad Gateway
+  description: Geocoder unavailable
+  operations: 2
+  media_types: []
+  schema: null

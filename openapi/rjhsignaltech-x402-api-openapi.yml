@@ -1,0 +1,150 @@
+openapi: 3.2.0
+info:
+  title: Rjhsignaltech X402 API
+  version: 1.4.0
+  contact:
+    email: rjhsignaltech@gmail.com
+  x-guidance: 'RJH Signal Technologies LLC is a Wisconsin limited liability company operated end to end by an artificial intelligence, not by a person. Call GET /v1/lookup?address=<US street address> (free 50 per day per IP, or X-API-Key for Pro) or the pay-per-call GET /x402/v1/lookup?address=... (x402, 0.003 USDC on Base; the first call answers 402 with payment requirements, resend with X-PAYMENT). The answer is JSON: 119th Congress district, state legislative districts, current legislators, statewide executive officials, local boundaries and the mayor where covered. /v1/batch takes up to 40 addresses; /v1/zip takes a 5-digit ZIP (approximate); /civicinfo/v2/representatives mimics the retired Google Civic API.'
+  description: 'Operations tagged X402 across 2 of this provider''s published API definitions: whorepresents.openapi.json, openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://whorepresents.rjhsignaltech.workers.dev
+security:
+- {}
+- apiKey: []
+tags:
+- name: X402
+paths:
+  /x402/v1/lookup:
+    get:
+      operationId: x402Lookup
+      summary: 'Pay-per-call lookup (x402 only, no free tier): always answers 402 with x402…'
+      security: []
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.003'
+        protocols:
+        - x402: {}
+      parameters:
+      - name: address
+        in: query
+        required: true
+        description: US street address
+        schema:
+          type: string
+          maxLength: 300
+        example: 2 E Main St, Madison, WI 53703
+      responses:
+        '200':
+          description: Same as /v1/lookup plus payment{scheme,network,asset,amount_micro_usdc,payer,tx_hash}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  operator_disclosure:
+                    type: string
+                  input:
+                    type: string
+                  matched_address:
+                    type: string
+                  coordinates:
+                    type: object
+                    description: '{lat, lon}'
+                  state:
+                    type: string
+                    description: USPS state code
+                  districts:
+                    type: object
+                    description: 'congressional, state_upper, state_lower: {number, name, ocd_division_id, census_code}'
+                  local:
+                    type: object
+                    description: county, place or county_subdivision, school_districts, census_tract, mayor (or null), mayor_status
+                  officials:
+                    type: array
+                    description: 'U.S. senators, U.S. representative, state legislators: {office, name, party, phone, email, url, ids, district, source}'
+                  state_executives:
+                    type: array
+                    description: governor and other statewide officials from Open States
+                  match_status:
+                    type: object
+                  data_as_of:
+                    type: object
+                  notices:
+                    type: array
+                    items:
+                      type: string
+                  usage:
+                    type: object
+                  payment:
+                    type: object
+                    description: '{scheme, network, asset, amount_micro_usdc, payer, tx_hash}'
+                required:
+                - operator_disclosure
+                - input
+                - matched_address
+                - state
+                - districts
+                - officials
+                - match_status
+        '400':
+          description: Missing address (not charged)
+        '402':
+          description: Payment Required
+      tags:
+      - X402
+    post:
+      operationId: x402LookupPost
+      summary: Same paid lookup as GET, for callers whose house style is a POST with a JSON…
+      security: []
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.003'
+        protocols:
+        - x402: {}
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address:
+                  type: string
+                  maxLength: 300
+              example:
+                address: 2 E Main St, Madison, WI 53703
+      parameters:
+      - name: address
+        in: query
+        required: false
+        description: US street address; overrides the body when both are sent
+        schema:
+          type: string
+          maxLength: 300
+      responses:
+        '200':
+          description: Same as the GET form
+        '400':
+          description: Missing address (not charged)
+        '402':
+          description: Payment Required
+      tags:
+      - X402
+    servers:
+    - url: https://whorepresents.rjhsignaltech.workers.dev
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+externalDocs:
+  description: Migrating from the Google Civic Information API representatives endpoint
+  url: https://whorepresents.rjhsignaltech.workers.dev/migrate
+x-refined-from:
+- whorepresents.openapi.json
+- openapi.json

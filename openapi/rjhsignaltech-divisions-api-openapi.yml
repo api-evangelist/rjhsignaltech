@@ -1,0 +1,53 @@
+openapi: 3.2.0
+info:
+  title: Rjhsignaltech Divisions API
+  version: 1.4.0
+  contact:
+    email: rjhsignaltech@gmail.com
+  x-guidance: 'RJH Signal Technologies LLC is a Wisconsin limited liability company operated end to end by an artificial intelligence, not by a person. Call GET /v1/lookup?address=<US street address> (free 50 per day per IP, or X-API-Key for Pro) or the pay-per-call GET /x402/v1/lookup?address=... (x402, 0.003 USDC on Base; the first call answers 402 with payment requirements, resend with X-PAYMENT). The answer is JSON: 119th Congress district, state legislative districts, current legislators, statewide executive officials, local boundaries and the mayor where covered. /v1/batch takes up to 40 addresses; /v1/zip takes a 5-digit ZIP (approximate); /civicinfo/v2/representatives mimics the retired Google Civic API.'
+  description: 'Operations tagged Divisions across 2 of this provider''s published API definitions: whorepresents.openapi.json, openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://whorepresents.rjhsignaltech.workers.dev
+security:
+- {}
+- apiKey: []
+tags:
+- name: Divisions
+paths:
+  /v1/divisions:
+    get:
+      summary: Districts and local boundaries only (no officeholders) for a U.S.
+      parameters:
+      - name: address
+        in: query
+        required: true
+        schema:
+          type: string
+          maxLength: 300
+      responses:
+        '200':
+          description: JSON with districts{congressional,state_upper,state_lower} and OCD-style ids, local boundaries (no local.mayor), match_status, data_as_of; no officials or state_executives
+        '400':
+          description: Missing or too-long address
+        '404':
+          description: no_match
+        '429':
+          description: Quota exceeded
+      tags:
+      - Divisions
+      operationId: getV1Divisions
+      x-operation-id-source: derived
+    servers:
+    - url: https://whorepresents.rjhsignaltech.workers.dev
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+externalDocs:
+  description: Migrating from the Google Civic Information API representatives endpoint
+  url: https://whorepresents.rjhsignaltech.workers.dev/migrate
+x-refined-from:
+- whorepresents.openapi.json
+- openapi.json

@@ -1,0 +1,483 @@
+{
+  "operator_disclosure": "RJH Signal Technologies LLC is a Wisconsin limited liability company operated end to end by an artificial intelligence, not by a person.",
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Who Represents This Address",
+    "version": "1.4.0",
+    "description": "RJH Signal Technologies LLC is a Wisconsin limited liability company operated end to end by an artificial intelligence, not by a person. Address to U.S. congressional district (119th), state legislative districts, current officeholders (U.S. senators and representative, state legislators, the state's statewide executive officials such as the governor and attorney general) and local boundaries (county, place or county subdivision, school districts, census tract). A mayor is included only for the roughly 280 cities Open States covers, matched exactly to the Census incorporated place; otherwise local.mayor is null. No city council, county or school-board officials. This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.",
+    "contact": {
+      "email": "rjhsignaltech@gmail.com"
+    },
+    "x-guidance": "RJH Signal Technologies LLC is a Wisconsin limited liability company operated end to end by an artificial intelligence, not by a person. Call GET /v1/lookup?address=<US street address> (free 50 per day per IP, or X-API-Key for Pro) or the pay-per-call GET /x402/v1/lookup?address=... (x402, 0.003 USDC on Base; the first call answers 402 with payment requirements, resend with X-PAYMENT). The answer is JSON: 119th Congress district, state legislative districts, current legislators, statewide executive officials, local boundaries and the mayor where covered. /v1/batch takes up to 40 addresses; /v1/zip takes a 5-digit ZIP (approximate); /civicinfo/v2/representatives mimics the retired Google Civic API."
+  },
+  "servers": [
+    {
+      "url": "https://whorepresents.rjhsignaltech.workers.dev"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKey": []
+    }
+  ],
+  "externalDocs": {
+    "description": "Migrating from the Google Civic Information API representatives endpoint",
+    "url": "https://whorepresents.rjhsignaltech.workers.dev/migrate"
+  },
+  "paths": {
+    "/civicinfo/v2/representatives": {
+      "get": {
+        "summary": "Google Civic Information API v2 representativeInfoByAddress-compatible response (federal and state legislators, statewide executive officials, and the mayor where Open States covers the city); same quota as /v1/lookup. See /migrate.",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          {
+            "name": "key",
+            "in": "query",
+            "required": false,
+            "description": "Accepted and ignored (send X-API-Key for Pro)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "levels",
+            "in": "query",
+            "required": false,
+            "description": "Filter offices by level (only country, administrativeArea1 and locality occur)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "roles",
+            "in": "query",
+            "required": false,
+            "description": "Filter offices by role (only legislatorUpperBody, legislatorLowerBody, headOfGovernment, deputyHeadOfGovernment and governmentOfficer occur)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "includeOffices",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{kind:'civicinfo#representativeInfoResponse', normalizedInput{line1,city,state,zip}, divisions{<ocdId>:{name,officeIndices}}, offices[{name,divisionId,levels,roles,sources,officialIndices}], officials[{name,party,phones,urls,emails}]} plus operator_disclosure and usage"
+          },
+          "400": {
+            "description": "Missing or too-long address"
+          },
+          "401": {
+            "description": "Unknown X-API-Key (carries upgrade_url)"
+          },
+          "402": {
+            "description": "x402 payment required (free tier used up); 0.003 USDC on Base per call via X-PAYMENT, or Pro"
+          },
+          "404": {
+            "description": "no_match"
+          },
+          "429": {
+            "description": "Quota exceeded"
+          }
+        }
+      }
+    },
+    "/civicinfo/v2/divisionsByAddress": {
+      "get": {
+        "summary": "Google Civic Information API v2 divisionsByAddress-compatible response {normalizedInput, divisions}; same quota as /v1/lookup",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          {
+            "name": "key",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{normalizedInput, divisions{<ocdId>:{name}}} plus operator_disclosure and usage"
+          },
+          "404": {
+            "description": "no_match"
+          },
+          "429": {
+            "description": "Quota exceeded"
+          }
+        }
+      }
+    },
+    "/x402/v1/lookup": {
+      "get": {
+        "operationId": "x402Lookup",
+        "summary": "Pay-per-call lookup (x402 only, no free tier): always answers 402 with x402 requirements (0.003 USDC on Base) until a valid X-PAYMENT is sent; then the /v1/lookup JSON plus payment.tx_hash. Settled only on a 200 result.",
+        "security": [],
+        "x-payment-info": {
+          "price": {
+            "mode": "fixed",
+            "currency": "USD",
+            "amount": "0.003"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            }
+          ]
+        },
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "description": "US street address",
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "example": "2 E Main St, Madison, WI 53703"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Same as /v1/lookup plus payment{scheme,network,asset,amount_micro_usdc,payer,tx_hash}",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "operator_disclosure": {
+                      "type": "string"
+                    },
+                    "input": {
+                      "type": "string"
+                    },
+                    "matched_address": {
+                      "type": "string"
+                    },
+                    "coordinates": {
+                      "type": "object",
+                      "description": "{lat, lon}"
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "USPS state code"
+                    },
+                    "districts": {
+                      "type": "object",
+                      "description": "congressional, state_upper, state_lower: {number, name, ocd_division_id, census_code}"
+                    },
+                    "local": {
+                      "type": "object",
+                      "description": "county, place or county_subdivision, school_districts, census_tract, mayor (or null), mayor_status"
+                    },
+                    "officials": {
+                      "type": "array",
+                      "description": "U.S. senators, U.S. representative, state legislators: {office, name, party, phone, email, url, ids, district, source}"
+                    },
+                    "state_executives": {
+                      "type": "array",
+                      "description": "governor and other statewide officials from Open States"
+                    },
+                    "match_status": {
+                      "type": "object"
+                    },
+                    "data_as_of": {
+                      "type": "object"
+                    },
+                    "notices": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "usage": {
+                      "type": "object"
+                    },
+                    "payment": {
+                      "type": "object",
+                      "description": "{scheme, network, asset, amount_micro_usdc, payer, tx_hash}"
+                    }
+                  },
+                  "required": [
+                    "operator_disclosure",
+                    "input",
+                    "matched_address",
+                    "state",
+                    "districts",
+                    "officials",
+                    "match_status"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing address (not charged)"
+          },
+          "402": {
+            "description": "Payment Required"
+          }
+        }
+      },
+      "post": {
+        "operationId": "x402LookupPost",
+        "summary": "Same paid lookup as GET, for callers whose house style is a POST with a JSON body. Identical 402 challenge, price and result; the address may be sent as ?address= or in the JSON body.",
+        "security": [],
+        "x-payment-info": {
+          "price": {
+            "mode": "fixed",
+            "currency": "USD",
+            "amount": "0.003"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            }
+          ]
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "maxLength": 300
+                  }
+                },
+                "example": {
+                  "address": "2 E Main St, Madison, WI 53703"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": false,
+            "description": "US street address; overrides the body when both are sent",
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Same as the GET form"
+          },
+          "400": {
+            "description": "Missing address (not charged)"
+          },
+          "402": {
+            "description": "Payment Required"
+          }
+        }
+      }
+    },
+    "/v1/zip": {
+      "get": {
+        "summary": "Approximate districts and officeholders for a 5-digit ZIP (Census 2020 ZCTA overlap by land area, not population; no geocoder call). Same quota, auth and 402 behavior as /v1/lookup; one lookup per call.",
+        "parameters": [
+          {
+            "name": "zip",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{5}$"
+            },
+            "example": "53703"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{zip, note, state, senators[], state_executives[] (no mayor for ZIP lookups), layers{congressional,state_upper,state_lower:{ambiguous, districts[{share, district, officials[], match_status}]}}, data_as_of, notices, usage}"
+          },
+          "400": {
+            "description": "Not 5 digits"
+          },
+          "401": {
+            "description": "Unknown X-API-Key"
+          },
+          "402": {
+            "description": "x402 payment required (free tier used up)"
+          },
+          "404": {
+            "description": "No ZCTA for this ZIP"
+          },
+          "429": {
+            "description": "Quota exceeded"
+          }
+        }
+      }
+    },
+    "/v1/batch": {
+      "post": {
+        "summary": "Look up 1 to 40 U.S. addresses in one request (each valid address counts as one lookup; at most 5 geocoder calls run at once; 60-second batch limit; batch answers are geocoded fresh, not served from the 30-day cache)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "addresses"
+                ],
+                "properties": {
+                  "addresses": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 40,
+                    "items": {
+                      "type": "string",
+                      "maxLength": 300
+                    }
+                  }
+                }
+              },
+              "example": {
+                "addresses": [
+                  "2 E Main St, Madison, WI 53703",
+                  "350 5th Ave, New York, NY 10118"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON {results:[one /v1/lookup-shaped object per address, in input order; failed addresses carry input, error (no_match|geocoder_unavailable|invalid_address|batch_deadline_exceeded) and message], count, matched, data_as_of, notices, usage}. invalid_address and batch_deadline_exceeded items are not counted against the quota."
+          },
+          "400": {
+            "description": "Invalid JSON, missing addresses, or more than 40 addresses"
+          },
+          "401": {
+            "description": "Unknown X-API-Key (carries upgrade_url)"
+          },
+          "413": {
+            "description": "Body over 64 KB"
+          },
+          "429": {
+            "description": "The batch would exceed the remaining quota (free tier: carries upgrade_url); nothing is counted"
+          }
+        }
+      }
+    },
+    "/v1/divisions": {
+      "get": {
+        "summary": "Districts and local boundaries only (no officeholders) for a U.S. address; same quota as /v1/lookup",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JSON with districts{congressional,state_upper,state_lower} and OCD-style ids, local boundaries (no local.mayor), match_status, data_as_of; no officials or state_executives"
+          },
+          "400": {
+            "description": "Missing or too-long address"
+          },
+          "404": {
+            "description": "no_match"
+          },
+          "429": {
+            "description": "Quota exceeded"
+          }
+        }
+      }
+    },
+    "/v1/lookup": {
+      "get": {
+        "summary": "Look up districts and officeholders for a U.S. address",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "example": "2 E Main St, Madison, WI 53703"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Match. JSON with operator_disclosure, input, matched_address, coordinates, state, districts{congressional,state_upper,state_lower}, local{county{name,geoid,ocd_division_id?},place{name,geoid}|null,county_subdivision{name,geoid} (only when no incorporated place),school_districts[{type:unified|elementary|secondary,name,geoid}],census_tract{geoid},mayor{office,role,name,party,email,phone,url,links[],ids{ocd_person},term_end,municipality,jurisdiction,ocd_division_id,sources[],source}|null,mayor_status:matched|not_covered|no_incorporated_place}, officials[], state_executives[{office,role,name,party,email,phone,url,links[],ids{ocd_person},term_end,sources[],source}] (Open States; governor, lieutenant governor, attorney general, secretary of state, treasurer, auditor, chief election officer where present), match_status{congressional,state_upper,state_lower: matched|unmatched|no_district_returned|not_applicable_unicameral|not_applicable_no_state_legislature}, data_as_of, notices[], usage."
+          },
+          "400": {
+            "description": "Missing or too-long address"
+          },
+          "401": {
+            "description": "Unknown X-API-Key"
+          },
+          "402": {
+            "description": "x402 payment required: the free tier is used up (or an X-PAYMENT header failed checks). Pay 0.003 USDC on Base per lookup by resending with a signed x402 exact payment in X-PAYMENT (accepts[] lists the requirements; also PAYMENT-REQUIRED header), or use Pro (upgrade_url). Only a successful (200) lookup is settled."
+          },
+          "404": {
+            "description": "{error:'no_match'} geocoder found nothing"
+          },
+          "429": {
+            "description": "Quota exceeded"
+          },
+          "502": {
+            "description": "Geocoder unavailable"
+          }
+        }
+      }
+    }
+  }
+}

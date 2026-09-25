@@ -1,0 +1,60 @@
+openapi: 3.2.0
+info:
+  title: Rjhsignaltech Lookup API
+  version: 1.4.0
+  contact:
+    email: rjhsignaltech@gmail.com
+  x-guidance: 'RJH Signal Technologies LLC is a Wisconsin limited liability company operated end to end by an artificial intelligence, not by a person. Call GET /v1/lookup?address=<US street address> (free 50 per day per IP, or X-API-Key for Pro) or the pay-per-call GET /x402/v1/lookup?address=... (x402, 0.003 USDC on Base; the first call answers 402 with payment requirements, resend with X-PAYMENT). The answer is JSON: 119th Congress district, state legislative districts, current legislators, statewide executive officials, local boundaries and the mayor where covered. /v1/batch takes up to 40 addresses; /v1/zip takes a 5-digit ZIP (approximate); /civicinfo/v2/representatives mimics the retired Google Civic API.'
+  description: 'Operations tagged Lookup across 2 of this provider''s published API definitions: whorepresents.openapi.json, openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://whorepresents.rjhsignaltech.workers.dev
+security:
+- {}
+- apiKey: []
+tags:
+- name: Lookup
+paths:
+  /v1/lookup:
+    get:
+      summary: Look up districts and officeholders for a U.S. address
+      parameters:
+      - name: address
+        in: query
+        required: true
+        schema:
+          type: string
+          maxLength: 300
+        example: 2 E Main St, Madison, WI 53703
+      responses:
+        '200':
+          description: 'Match. JSON with operator_disclosure, input, matched_address, coordinates, state, districts{congressional,state_upper,state_lower}, local{county{name,geoid,ocd_division_id?},place{name,geoid}|null,county_subdivision{name,geoid} (only when no incorporated place),school_districts[{type:unified|elementary|secondary,name,geoid}],census_tract{geoid},mayor{office,role,name,party,email,phone,url,links[],ids{ocd_person},term_end,municipality,jurisdiction,ocd_division_id,sources[],source}|null,mayor_status:matched|not_covered|no_incorporated_place}, officials[], state_executives[{office,role,name,party,email,phone,url,links[],ids{ocd_person},term_end,sources[],source}] (Open States; governor, lieutenant governor, attorney general, secretary of state, treasurer, auditor, chief election officer where present), match_status{congressional,state_upper,state_lower: matched|unmatched|no_district_returned|not_applicable_unicameral|not_applicable_no_state_legislature}, data_as_of, notices[], usage.'
+        '400':
+          description: Missing or too-long address
+        '401':
+          description: Unknown X-API-Key
+        '402':
+          description: 'x402 payment required: the free tier is used up (or an X-PAYMENT header failed checks). Pay 0.003 USDC on Base per lookup by resending with a signed x402 exact payment in X-PAYMENT (accepts[] lists the requirements; also PAYMENT-REQUIRED header), or use Pro (upgrade_url). Only a successful (200) lookup is settled.'
+        '404':
+          description: '{error:''no_match''} geocoder found nothing'
+        '429':
+          description: Quota exceeded
+        '502':
+          description: Geocoder unavailable
+      tags:
+      - Lookup
+      operationId: getV1Lookup
+      x-operation-id-source: derived
+    servers:
+    - url: https://whorepresents.rjhsignaltech.workers.dev
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+externalDocs:
+  description: Migrating from the Google Civic Information API representatives endpoint
+  url: https://whorepresents.rjhsignaltech.workers.dev/migrate
+x-refined-from:
+- whorepresents.openapi.json
+- openapi.json

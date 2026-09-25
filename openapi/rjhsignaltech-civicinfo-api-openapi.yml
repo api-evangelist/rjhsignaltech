@@ -1,0 +1,113 @@
+openapi: 3.2.0
+info:
+  title: Rjhsignaltech Civicinfo API
+  version: 1.4.0
+  contact:
+    email: rjhsignaltech@gmail.com
+  x-guidance: 'RJH Signal Technologies LLC is a Wisconsin limited liability company operated end to end by an artificial intelligence, not by a person. Call GET /v1/lookup?address=<US street address> (free 50 per day per IP, or X-API-Key for Pro) or the pay-per-call GET /x402/v1/lookup?address=... (x402, 0.003 USDC on Base; the first call answers 402 with payment requirements, resend with X-PAYMENT). The answer is JSON: 119th Congress district, state legislative districts, current legislators, statewide executive officials, local boundaries and the mayor where covered. /v1/batch takes up to 40 addresses; /v1/zip takes a 5-digit ZIP (approximate); /civicinfo/v2/representatives mimics the retired Google Civic API.'
+  description: 'Operations tagged Civicinfo across 2 of this provider''s published API definitions: whorepresents.openapi.json, openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://whorepresents.rjhsignaltech.workers.dev
+security:
+- {}
+- apiKey: []
+tags:
+- name: Civicinfo
+paths:
+  /civicinfo/v2/representatives:
+    get:
+      summary: Google Civic Information API v2 representativeInfoByAddress-compatible response…
+      parameters:
+      - name: address
+        in: query
+        required: true
+        schema:
+          type: string
+          maxLength: 300
+      - name: key
+        in: query
+        required: false
+        description: Accepted and ignored (send X-API-Key for Pro)
+        schema:
+          type: string
+      - name: levels
+        in: query
+        required: false
+        description: Filter offices by level (only country, administrativeArea1 and locality occur)
+        schema:
+          type: array
+          items:
+            type: string
+      - name: roles
+        in: query
+        required: false
+        description: Filter offices by role (only legislatorUpperBody, legislatorLowerBody, headOfGovernment, deputyHeadOfGovernment and governmentOfficer occur)
+        schema:
+          type: array
+          items:
+            type: string
+      - name: includeOffices
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: '{kind:''civicinfo#representativeInfoResponse'', normalizedInput{line1,city,state,zip}, divisions{<ocdId>:{name,officeIndices}}, offices[{name,divisionId,levels,roles,sources,officialIndices}], officials[{name,party,phones,urls,emails}]} plus operator_disclosure and usage'
+        '400':
+          description: Missing or too-long address
+        '401':
+          description: Unknown X-API-Key (carries upgrade_url)
+        '402':
+          description: x402 payment required (free tier used up); 0.003 USDC on Base per call via X-PAYMENT, or Pro
+        '404':
+          description: no_match
+        '429':
+          description: Quota exceeded
+      tags:
+      - Civicinfo
+      operationId: getCivicinfoV2Representatives
+      x-operation-id-source: derived
+    servers:
+    - url: https://whorepresents.rjhsignaltech.workers.dev
+  /civicinfo/v2/divisionsByAddress:
+    get:
+      summary: Google Civic Information API v2 divisionsByAddress-compatible response…
+      parameters:
+      - name: address
+        in: query
+        required: true
+        schema:
+          type: string
+          maxLength: 300
+      - name: key
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{normalizedInput, divisions{<ocdId>:{name}}} plus operator_disclosure and usage'
+        '404':
+          description: no_match
+        '429':
+          description: Quota exceeded
+      tags:
+      - Civicinfo
+      operationId: getCivicinfoV2DivisionsByAddress
+      x-operation-id-source: derived
+    servers:
+    - url: https://whorepresents.rjhsignaltech.workers.dev
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+externalDocs:
+  description: Migrating from the Google Civic Information API representatives endpoint
+  url: https://whorepresents.rjhsignaltech.workers.dev/migrate
+x-refined-from:
+- whorepresents.openapi.json
+- openapi.json

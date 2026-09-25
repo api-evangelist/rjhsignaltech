@@ -1,0 +1,11 @@
+generated: '2026-09-25'
+method: generated
+generator: extract-docs-artifacts.py skills (local)
+source: openapi/whorepresents.openapi.json
+skills:
+- file: skills/rjhsignaltech-x402-lookup.md
+  name: rjhsignaltech-x402-lookup
+  api: openapi/whorepresents.openapi.json
+  operations:
+  - x402Lookup
+  - x402LookupPost

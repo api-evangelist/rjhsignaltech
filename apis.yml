@@ -1,24 +1,137 @@
 aid: rjhsignaltech
 name: Who Represents This Address (RJH Signal Technologies)
-description: 'Who Represents This Address (RJH Signal Technologies) is a company surfaced via the API
-  Evangelist harvest backlog (source: new-submission) and added to the network as a stub for full-pipeline
-  profiling.'
+description: Who Represents This Address (RJH Signal Technologies) provides an AI‑operated API that returns U.S. congressional and state legislative
+  districts, current officeholders, statewide executives, mayoral information, and local boundaries for a given street address. It serves as a
+  drop‑in replacement for the discontinued Google Civic Information API, offering free tier access and paid per‑call options, with batch lookup
+  support for up to 40 addresses.
 url: https://raw.githubusercontent.com/api-evangelist/rjhsignaltech/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:new-submission
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-09-25 (modular-v1; was harvest)
 specificationVersion: '0.20'
 created: '2026-09-25'
 modified: '2026-09-25'
 tags:
 - Company
-apis: []
+- API
+- Civic
+- Government
+- Address
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/rjhsignaltech-openapi-overlay.yaml
+- type: MCPServer
+  url: mcp/rjhsignaltech-mcp.yml
+- type: AgenticAccess
+  url: agentic-access/rjhsignaltech-agentic-access.yml
+- type: Spectral
+  url: rules/rjhsignaltech-rules.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: ErrorCatalog
+  url: errors/rjhsignaltech-problem-types.yml
+- type: Conformance
+  url: conformance/rjhsignaltech-conformance.yml
+- type: Hosts
+  url: hosts/rjhsignaltech-hosts.yml
+- type: Vendors
+  url: vendors/rjhsignaltech-vendors.yml
+- type: DomainSecurity
+  url: security/rjhsignaltech-domain-security.yml
+- type: Authentication
+  url: authentication/rjhsignaltech-authentication.yml
 - type: Website
   url: https://whorepresents.rjhsignaltech.workers.dev/
+- type: APIReference
+  url: https://whorepresents.rjhsignaltech.workers.dev/openapi.json
+- type: Pricing
+  url: https://whorepresents.rjhsignaltech.workers.dev/#pricing
+- type: Support
+  url: mailto:rjhsignaltech@gmail.com
+apis:
+- name: Who Represents This Address API
+  description: >-
+    API providing U.S. congressional and state legislative district lookup and officeholder info.
+  humanURL: https://whorepresents.rjhsignaltech.workers.dev/
+  baseURL: https://whorepresents.rjhsignaltech.workers.dev
+  aid: rjhsignaltech:who-represents-this-address-api
+- aid: rjhsignaltech:rjhsignaltech-batch-api
+  name: Who Represents This Address (RJH Signal Technologies) Batch API
+  description: >-
+    The Batch API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for batch.
+  humanURL: https://whorepresents.rjhsignaltech.workers.dev/
+  baseURL: https://whorepresents.rjhsignaltech.workers.dev
+  tags:
+  - Batch
+  properties:
+  - type: OpenAPI
+    url: openapi/rjhsignaltech-batch-api-openapi.yml
+- aid: rjhsignaltech:rjhsignaltech-civicinfo-api
+  name: Who Represents This Address (RJH Signal Technologies) Civicinfo API
+  description: >-
+    The Civicinfo API from Who Represents This Address (RJH Signal Technologies) — 2 operation(s) for
+    civicinfo.
+  humanURL: https://whorepresents.rjhsignaltech.workers.dev/
+  baseURL: https://whorepresents.rjhsignaltech.workers.dev
+  tags:
+  - Civicinfo
+  properties:
+  - type: OpenAPI
+    url: openapi/rjhsignaltech-civicinfo-api-openapi.yml
+- aid: rjhsignaltech:rjhsignaltech-divisions-api
+  name: Who Represents This Address (RJH Signal Technologies) Divisions API
+  description: >-
+    The Divisions API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for
+    divisions.
+  humanURL: https://whorepresents.rjhsignaltech.workers.dev/
+  baseURL: https://whorepresents.rjhsignaltech.workers.dev
+  tags:
+  - Divisions
+  properties:
+  - type: OpenAPI
+    url: openapi/rjhsignaltech-divisions-api-openapi.yml
+- aid: rjhsignaltech:rjhsignaltech-lookup-api
+  name: Who Represents This Address (RJH Signal Technologies) Lookup API
+  description: >-
+    The Lookup API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for lookup.
+  humanURL: https://whorepresents.rjhsignaltech.workers.dev/
+  baseURL: https://whorepresents.rjhsignaltech.workers.dev
+  tags:
+  - Lookup
+  properties:
+  - type: OpenAPI
+    url: openapi/rjhsignaltech-lookup-api-openapi.yml
+- aid: rjhsignaltech:rjhsignaltech-x402-api
+  name: Who Represents This Address (RJH Signal Technologies) X402 API
+  description: >-
+    The X402 API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for x402.
+  humanURL: https://whorepresents.rjhsignaltech.workers.dev/
+  baseURL: https://whorepresents.rjhsignaltech.workers.dev
+  tags:
+  - X402
+  properties:
+  - type: OpenAPI
+    url: openapi/rjhsignaltech-x402-api-openapi.yml
+- aid: rjhsignaltech:rjhsignaltech-zip-api
+  name: Who Represents This Address (RJH Signal Technologies) Zip API
+  description: >-
+    The Zip API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for zip.
+  humanURL: https://whorepresents.rjhsignaltech.workers.dev/
+  baseURL: https://whorepresents.rjhsignaltech.workers.dev
+  tags:
+  - Zip
+  properties:
+  - type: OpenAPI
+    url: openapi/rjhsignaltech-zip-api-openapi.yml
+x-enrichment:
+  date: '2026-09-25'
+  status: enriched
+  artifacts_added: 23
+  pass: modular-v1
+  engine: identity=local,contract=local,surfaces=local,docs=local
