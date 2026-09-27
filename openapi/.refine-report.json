@@ -1,8 +1,7 @@
 {
   "provider": "rjhsignaltech",
   "sources": [
-    "_original/whorepresents.openapi.json",
-    "openapi.json"
+    "_original/openapi.json"
   ],
   "outputs": [
     "rjhsignaltech-batch-api-openapi.yml",
@@ -12,28 +11,12 @@
     "rjhsignaltech-x402-api-openapi.yml",
     "rjhsignaltech-zip-api-openapi.yml"
   ],
-  "archived": [
-    "archived openapi/openapi.json"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
-    "whorepresents.openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "whorepresents.openapi.json: tagged paths GET /civicinfo/v2/representatives -> Civicinfo",
-    "whorepresents.openapi.json: tagged paths GET /civicinfo/v2/divisionsByAddress -> Civicinfo",
-    "whorepresents.openapi.json: tagged paths GET /x402/v1/lookup -> X402",
-    "whorepresents.openapi.json: tagged paths POST /x402/v1/lookup -> X402",
-    "whorepresents.openapi.json: tagged paths GET /v1/zip -> Zip",
-    "whorepresents.openapi.json: tagged paths POST /v1/batch -> Batch",
-    "whorepresents.openapi.json: tagged paths GET /v1/divisions -> Divisions",
-    "whorepresents.openapi.json: tagged paths GET /v1/lookup -> Lookup",
-    "whorepresents.openapi.json: declared missing tag: Batch",
-    "whorepresents.openapi.json: declared missing tag: Civicinfo",
-    "whorepresents.openapi.json: declared missing tag: Divisions",
-    "whorepresents.openapi.json: declared missing tag: Lookup",
-    "whorepresents.openapi.json: declared missing tag: X402",
-    "whorepresents.openapi.json: declared missing tag: Zip",
     "openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "openapi.json: tagged paths GET /civicinfo/v2/representatives -> Civicinfo",
     "openapi.json: tagged paths GET /civicinfo/v2/divisionsByAddress -> Civicinfo",
@@ -49,15 +32,10 @@
     "openapi.json: declared missing tag: Lookup",
     "openapi.json: declared missing tag: X402",
     "openapi.json: declared missing tag: Zip",
-    "tag 'Batch' spans 2 source specs (whorepresents.openapi.json, openapi.json): per-path servers applied",
-    "tag 'Civicinfo' spans 2 source specs (whorepresents.openapi.json, openapi.json): per-path servers applied",
-    "tag 'Divisions' spans 2 source specs (whorepresents.openapi.json, openapi.json): per-path servers applied",
-    "tag 'Lookup' spans 2 source specs (whorepresents.openapi.json, openapi.json): per-path servers applied",
-    "tag 'X402' spans 2 source specs (whorepresents.openapi.json, openapi.json): per-path servers applied",
-    "tag 'Zip' spans 2 source specs (whorepresents.openapi.json, openapi.json): per-path servers applied",
     "apis.yml register: already-registered"
   ],
   "skipped": [
+    "_original/whorepresents.openapi.json: archived document superseded by a larger archived document",
     "rjhsignaltech-batch-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "rjhsignaltech-civicinfo-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "rjhsignaltech-divisions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
