@@ -14,6 +14,11 @@ created: '2026-09-25'
 modified: '2026-09-25'
 tags:
 - Company
+- Civic
+- Government
+- Address
+tags_raw:
+- Company
 - API
 - Civic
 - Government
@@ -114,6 +119,8 @@ apis:
   humanURL: https://whorepresents.rjhsignaltech.workers.dev/
   baseURL: https://whorepresents.rjhsignaltech.workers.dev
   tags:
+  - x402
+  tags_raw:
   - X402
   properties:
   - type: OpenAPI
