@@ -64,5 +64,118 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Who Represents This Address (RJH Signal Technologies) is a company surfaced via the API Evangelist harvest backlog (source: new-submission) and added to the network as a stub for full-pipeline profiling.
-- https://whorepresents.rjhsignaltech.workers.dev/
+Who Represents This Address (RJH Signal Technologies) provides an AI‑operated API that returns U.S. congressional and state legislative districts, current officeholders, statewide executives, mayoral information, and local boundaries for a given street address. It serves as a drop‑in replacement for the discontinued Google Civic Information API, offering free tier access and paid per‑call options, with batch lookup support for up to 40 addresses.
+
+**Areas:** Company · Civic · Government · Address
+
+## Who Represents This Address (RJH Signal Technologies) on APIs.io
+
+Everything profiled for Who Represents This Address (RJH Signal Technologies) is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/rjhsignaltech/](https://apis.io/providers/rjhsignaltech/)** — or go straight to one of the APIs or properties below.
+
+### APIs (7)
+
+- [Who Represents This Address API](https://apis.io/apis/rjhsignaltech/who-represents-this-address-api/) — API providing U.S. congressional and state legislative district lookup and officeholder info.
+- [Who Represents This Address (RJH Signal Technologies) Batch API](https://apis.io/apis/rjhsignaltech/rjhsignaltech-batch-api/) — The Batch API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for batch.
+- [Who Represents This Address (RJH Signal Technologies) Civicinfo API](https://apis.io/apis/rjhsignaltech/rjhsignaltech-civicinfo-api/) — The Civicinfo API from Who Represents This Address (RJH Signal Technologies) — 2 operation(s) for civicinfo.
+- [Who Represents This Address (RJH Signal Technologies) Divisions API](https://apis.io/apis/rjhsignaltech/rjhsignaltech-divisions-api/) — The Divisions API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for divisions.
+- [Who Represents This Address (RJH Signal Technologies) Lookup API](https://apis.io/apis/rjhsignaltech/rjhsignaltech-lookup-api/) — The Lookup API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for lookup.
+- [Who Represents This Address (RJH Signal Technologies) X402 API](https://apis.io/apis/rjhsignaltech/rjhsignaltech-x402-api/) — The X402 API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for x402.
+- [Who Represents This Address (RJH Signal Technologies) Zip API](https://apis.io/apis/rjhsignaltech/rjhsignaltech-zip-api/) — The Zip API from Who Represents This Address (RJH Signal Technologies) — 1 operation(s) for zip.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [rjhsignaltech-mcp.yml](https://apis.io/servers/rjhsignaltech/rjhsignaltech-mcp-yml/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Rjhsignaltech Agentic Access](https://apis.io/agentic-access/rjhsignaltech/rjhsignaltech-agentic-access/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Rjhsignaltech Openapi Overlay](https://apis.io/overlays/rjhsignaltech/rjhsignaltech-openapi-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Who Represents This Address (RJH Signal Technologies) API Rules](https://apis.io/rules/rjhsignaltech/rjhsignaltech-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Rjhsignaltech Authentication](https://apis.io/security/rjhsignaltech/rjhsignaltech-authentication/)
+- [Rjhsignaltech Domain Security](https://apis.io/security/rjhsignaltech/rjhsignaltech-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://whorepresents.rjhsignaltech.workers.dev/)
+- [API reference](https://whorepresents.rjhsignaltech.workers.dev/openapi.json)
+- [Pricing](https://whorepresents.rjhsignaltech.workers.dev/#pricing)
+
+## API Evangelist rating
+
+**Kin Score 27.2** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 56.7 |
+| Contract quality | 49.4 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 25.6 |
+| Access clarity | 10.5 |
+
+**Agent readiness 28.6** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 16.7** — Government & Public Sector
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/rjhsignaltech/](https://apis.io/providers/rjhsignaltech/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Who Represents This Address (RJH Signal Technologies): the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/rjhsignaltech/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
